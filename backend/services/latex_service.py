@@ -66,9 +66,7 @@ class LatexService:
             f.write(latex_content)
             
         try:
-            # Use Tectonic instead of pdflatex
-            # Tectonic automatically downloads packages and handles multiple passes
-            subprocess.run(['tectonic', tex_path], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            subprocess.run(['pdflatex', '-interaction=nonstopmode', '-output-directory', output_dir, tex_path], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             return pdf_path
         except (subprocess.CalledProcessError, FileNotFoundError) as e:
             print(f"LaTeX compilation failed: {e}")

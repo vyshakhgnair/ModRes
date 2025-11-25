@@ -14,5 +14,3 @@ Flask-Migrate
 pytest
 pytest-mock
 playwright
-psycopg2-binary
-gunicorn
