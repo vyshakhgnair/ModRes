@@ -59,8 +59,19 @@ if app.config['SQLALCHEMY_DATABASE_URI'].startswith("https://"):
         "Go to Supabase Dashboard > Settings > Database > Connection String."
     )
 
-# CORS configuration: Allow frontend origin and credentials
-CORS(app, resources={r"/api/*": {"origins": ["http://localhost:5173", "http://localhost:5174"]}}, supports_credentials=True)
+# CORS configuration
+allowed_origins = [
+    "http://localhost:5173",
+    "http://localhost:5174"
+]
+
+# Add production URL from environment variable
+frontend_url = os.getenv('FRONTEND_URL')
+if frontend_url:
+    # Support comma-separated URLs
+    allowed_origins.extend([url.strip() for url in frontend_url.split(',')])
+
+CORS(app, resources={r"/*": {"origins": allowed_origins}}, supports_credentials=True)
 
 # Initialize Extensions
 db.init_app(app)
