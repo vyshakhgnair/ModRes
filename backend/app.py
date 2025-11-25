@@ -19,8 +19,17 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite:///mod
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Fix for Supabase/Render (Postgres)
+# Fix for Supabase/Render (Postgres)
 if app.config['SQLALCHEMY_DATABASE_URI'].startswith("postgres://"):
     app.config['SQLALCHEMY_DATABASE_URI'] = app.config['SQLALCHEMY_DATABASE_URI'].replace("postgres://", "postgresql://", 1)
+
+if app.config['SQLALCHEMY_DATABASE_URI'].startswith("https://"):
+    raise ValueError(
+        "Invalid DATABASE_URL: The URL starts with 'https://'. "
+        "This looks like a Supabase Project URL (API URL). "
+        "You need the Connection String (starts with 'postgresql://'). "
+        "Go to Supabase Dashboard > Settings > Database > Connection String."
+    )
 
 # CORS configuration: Allow frontend origin and credentials
 CORS(app, resources={r"/api/*": {"origins": ["http://localhost:5173", "http://localhost:5174"]}}, supports_credentials=True)
