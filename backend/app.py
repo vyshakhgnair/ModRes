@@ -15,8 +15,12 @@ load_dotenv()
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'dev-secret-key') # Change this in prod
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///modres.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite:///modres.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# Fix for Supabase/Render (Postgres)
+if app.config['SQLALCHEMY_DATABASE_URI'].startswith("postgres://"):
+    app.config['SQLALCHEMY_DATABASE_URI'] = app.config['SQLALCHEMY_DATABASE_URI'].replace("postgres://", "postgresql://", 1)
 
 # CORS configuration: Allow frontend origin and credentials
 CORS(app, resources={r"/api/*": {"origins": ["http://localhost:5173", "http://localhost:5174"]}}, supports_credentials=True)
@@ -399,10 +403,16 @@ def delete_application(app_id):
         return jsonify({'error': str(e)}), 500
 
 
+
+
 @app.route('/api/auto-apply', methods=['POST'])
 @login_required
 def trigger_auto_apply():
     """Trigger the auto-apply agent"""
+    # Check for CLOUD_MODE
+    if os.getenv('CLOUD_MODE') == 'true':
+        return jsonify({'error': 'Agent mode requires local hosting due to cloud memory limits.'}), 400
+
     import threading
     import asyncio
     from services.agent_service import AutoApplyAgent
