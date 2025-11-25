@@ -1,6 +1,8 @@
 from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
 import os
+import socket
+from urllib.parse import urlparse
 from dotenv import load_dotenv
 from services.gemini_service import GeminiService
 from services.parser_service import ParserService
@@ -17,7 +19,32 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'dev-secret-key') # Change this in prod
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite:///modres.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {"pool_pre_ping": True}
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# Robust Fix for IPv6/Network Unreachable errors (Render/Supabase)
+# We resolve the hostname to an IPv4 address and pass it as 'hostaddr'
+# This forces the connection over IPv4 while keeping the hostname for SSL verification.
+try:
+    db_uri = app.config['SQLALCHEMY_DATABASE_URI']
+    # Only apply if it's a postgres connection
+    if 'postgres' in db_uri:
+        hostname = urlparse(db_uri).hostname
+        if hostname:
+            # Resolve to IPv4
+            ip_address = socket.gethostbyname(hostname)
+            print(f"Resolved Database Host {hostname} to IPv4: {ip_address}")
+            
+            app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
+                "pool_pre_ping": True,
+                "connect_args": {"hostaddr": ip_address}
+            }
+        else:
+             app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {"pool_pre_ping": True}
+    else:
+        app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {"pool_pre_ping": True}
+except Exception as e:
+    print(f"Warning: Failed to resolve DB hostname to IPv4: {e}")
+    app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {"pool_pre_ping": True}
 
 # Fix for Supabase/Render (Postgres)
 # Fix for Supabase/Render (Postgres)
