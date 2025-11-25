@@ -1,0 +1,16 @@
+flask
+flask-cors
+google-generativeai
+python-dotenv
+PyPDF2
+python-docx
+jinja2
+werkzeug
+reportlab
+Flask-SQLAlchemy
+Flask-Login
+Flask-Bcrypt
+Flask-Migrate
+pytest
+pytest-mock
+playwright

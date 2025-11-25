@@ -1,0 +1,78 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[margin=0.75in]{geometry}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{multicol}
+\usepackage{parskip}
+\pagenumbering{gobble}
+
+% Section formatting with only top rule
+\titleformat{\section}
+  {\bfseries\Large} % style
+  {}                % label
+  {0em}             % spacing before title
+  {\vspace{0.3em}\titlerule\vspace{0.5em}} % line above heading
+\titlespacing*{\section}{0pt}{1.2em}{0.8em}
+
+\hypersetup{
+  colorlinks=true,
+  urlcolor=blue
+}
+
+\begin{document}
+
+\begin{center}
+  \textbf{\Large \VAR{name | latex_escape}} \\[2pt]
+  \VAR{role | latex_escape} \quad | \quad \VAR{email | latex_escape} \quad | \quad \VAR{phone | latex_escape} \\[2pt]
+  \VAR{location | latex_escape} 
+  \BLOCK{if linkedin} \quad | \quad \href{\VAR{linkedin | latex_escape}}{LinkedIn} \BLOCK{endif}
+  \BLOCK{if github} \quad | \quad \href{\VAR{github | latex_escape}}{GitHub} \BLOCK{endif}
+  \BLOCK{if kaggle} \quad | \quad \href{\VAR{kaggle | latex_escape}}{Kaggle} \BLOCK{endif}
+\end{center}
+
+\section*{Objective}
+\VAR{objective | latex_escape}
+
+\section*{Education}
+\BLOCK{for edu in education}
+\textbf{\VAR{edu.school | latex_escape}} \hfill \VAR{edu.dates | latex_escape}\\
+\VAR{edu.degree | latex_escape} \hfill \VAR{edu.location | latex_escape} \\
+\BLOCK{endfor}
+
+\section*{Experience}
+\BLOCK{for exp in experience}
+\textbf{\VAR{exp.title | latex_escape} – \VAR{exp.company | latex_escape}} \hfill \VAR{exp.dates | latex_escape}\\
+\begin{itemize}[leftmargin=*]
+  \BLOCK{for point in exp.points}
+  \item \VAR{point | latex_escape}
+  \BLOCK{endfor}
+\end{itemize}
+\BLOCK{endfor}
+
+\BLOCK{if projects}
+\section*{Projects}
+\BLOCK{for proj in projects}
+\textbf{\VAR{proj.title | latex_escape}}\\
+\VAR{proj.description | latex_escape}  
+\textbf{Stack:} \VAR{proj.stack | latex_escape}\\[6pt]
+\BLOCK{endfor}
+\BLOCK{endif}
+
+\section*{Technical Skills}
+\BLOCK{if skills.languages} \textbf{Languages:} \VAR{skills.languages | latex_escape} \\ \BLOCK{endif}
+\BLOCK{if skills.web} \textbf{Web:} \VAR{skills.web | latex_escape} \\ \BLOCK{endif}
+\BLOCK{if skills.frameworks} \textbf{Frameworks:} \VAR{skills.frameworks | latex_escape} \\ \BLOCK{endif}
+\BLOCK{if skills.ai_ml} \textbf{AI/ML:} \VAR{skills.ai_ml | latex_escape} \\ \BLOCK{endif}
+\BLOCK{if skills.tools} \textbf{Tools:} \VAR{skills.tools | latex_escape} \\ \BLOCK{endif}
+
+\BLOCK{if achievements}
+\section*{Honors \,\&\, Awards}
+\begin{itemize}[leftmargin=*]
+  \BLOCK{for award in achievements}
+  \item \VAR{award | latex_escape}
+  \BLOCK{endfor}
+\end{itemize}
+\BLOCK{endif}
+
+\end{document}

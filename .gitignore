@@ -1,0 +1,32 @@
+# General
+.DS_Store
+.vscode/
+.idea/
+
+# Python / Backend
+backend/venv/
+backend/__pycache__/
+backend/*.pyc
+backend/.env
+backend/instance/
+backend/.pytest_cache/
+backend/output/
+*.db
+*.sqlite3
+
+# Node / Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+frontend/.env.local
+frontend/.env.*.local
+
+# Generated Files
+*.pdf
+!backend/dummy_resume.pdf
+test_output.pdf
+models.txt
+debug_*.py
+backend/services/__pycache__/
+backend/routes/__pycache__/
+backend/tests/__pycache__/
