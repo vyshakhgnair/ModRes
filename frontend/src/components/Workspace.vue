@@ -7,12 +7,9 @@
       <div class="p-8 border-b border-gray-100 bg-white">
         <div>
             <div class="flex items-center gap-3 mb-2">
-            <div class="w-8 h-8 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-lg flex items-center justify-center">
-                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+            <h1 class="text-3xl font-bold text-gray-900 tracking-tight">Resume Workspace</h1>
             </div>
-            <h1 class="text-2xl font-bold text-gray-900 tracking-tight">Resume Workspace</h1>
-            </div>
-            <p class="text-sm text-gray-500 ml-11">Create tailored resumes for your applications</p>
+            <p class="text-gray-600 mt-2">Create tailored resumes for your applications</p>
         </div>
       </div>
 

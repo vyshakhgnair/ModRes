@@ -29,11 +29,12 @@ export default {
             responseType: 'blob',
         });
     },
-    tailorResume(resumeText, jdText, userAnswers) {
+    tailorResume(resumeText, jdText, userAnswers, applicationId) {
         return api.post('/tailor-resume', {
             resume_text: resumeText,
             jd_text: jdText,
-            user_answers: userAnswers
+            user_answers: userAnswers,
+            application_id: applicationId
         });
     },
     compileLatex(latexCode) {

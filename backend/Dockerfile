@@ -3,9 +3,9 @@ FROM python:3.11-slim
 # Install system dependencies + Tectonic
 RUN apt-get update && apt-get install -y \
     libssl-dev \
-    curl \
-    && curl --proto '=https' --tlsv1.2 -fsSL https://drop-sh.fullyjustified.net | sh \
-    && mv tectonic /usr/local/bin/ \
+    texlive-latex-base \
+    texlive-fonts-recommended \
+    texlive-latex-extra \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Set working directory
